@@ -1,0 +1,10 @@
+name: DiscordSync
+version: 1.0.0
+main: nu.granskogen.spela.DiscordSync.Main
+author: Bingoo
+depends: ['LuckPerms']
+
+commands:
+  discord:
+    description: Sync discord and minecraft user
+    alias: ['dc']
