@@ -8,7 +8,10 @@ public enum SQLQueries {
 	UPDATE_USER_DECENT_TRUE("UPDATE verifiedusers SET isdecent=1,token='' WHERE uuid=?;"),
 	UPDATE_USER_OMEGA_FALSE("UPDATE verifiedusers SET isomega=0,token='' WHERE uuid=?;"),
 	UPDATE_USER_DECENT_FALSE("UPDATE verifiedusers SET isdecent=0,token='' WHERE uuid=?;"),
-	UPDATE_USERNAME("UPDATE verifiedusers SET minecraftname=? WHERE uuid=?");
+	UPDATE_USERNAME("UPDATE verifiedusers SET minecraftname=? WHERE uuid=?"),
+	PERMBANS_SELECT_USER_FROM_UUID("SELECT * FROM permbans WHERE uuid=?;"),
+	PERMBANS_ADD_USER("INSERT INTO permbans (uuid, reason, time) VALUES (?, ?, ?);"),
+	PERMBANS_REMOVE_USER("DELETE FROM permbans WHERE uuid=?;");
 	
 	private String query;
 	

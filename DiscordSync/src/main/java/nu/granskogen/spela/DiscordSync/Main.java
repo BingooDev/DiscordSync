@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 import com.google.gson.JsonObject;
@@ -127,6 +131,54 @@ public class Main extends Plugin {
 
 		} catch (IOException ex) {
 
+			System.out.println("I/O error: " + ex.getMessage());
+		}
+	}
+	
+	public void addPermban(UUID uuid, String reason) {
+		Connection con = null;
+		PreparedStatement stat = null;
+		try {
+			con = DataSource.getconConnection();
+			stat = con.prepareStatement(SQLQueries.PERMBANS_SELECT_USER_FROM_UUID.toString());
+			stat.setString(1, uuid.toString());
+			ResultSet rs = stat.executeQuery();
+
+			if (!rs.next()) 
+				return;
+			
+			if(rs.getString("minecraftname") == null || !rs.getString("minecraftname").equals(name)) {
+				PreparedStatement updateName = con.prepareStatement(SQLQueries.UPDATE_USERNAME.toString());
+				updateName.setString(1, name);
+				updateName.setString(2, uuid.toString());
+				updateName.executeUpdate();
+				pl.changeDiscordNickname(uuid, name);
+			}
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataSource.closeConnectionAndStatment(con, stat);
+		}
+		
+		int port = 3003;
+		try (Socket socket = new Socket("localhost", port)) {
+
+			OutputStream output = socket.getOutputStream();
+			JsonObject obj = new JsonObject();
+			
+			obj.addProperty("type", "AddBan");
+			obj.addProperty("uuid", uuid.toString());
+			obj.addProperty("reason", reason);
+			output.write(obj.toString().getBytes());
+
+			socket.close();
+		} catch (UnknownHostException ex) {
+
+			System.out.println("Server not found: " + ex.getMessage());
+
+		} catch (IOException ex) {
 			System.out.println("I/O error: " + ex.getMessage());
 		}
 	}
