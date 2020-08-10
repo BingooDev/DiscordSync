@@ -9,6 +9,7 @@ notARank: "&cRanken finns inte."
 rankAdded: "&aAnvändaren har fått Discord ranken."
 rankRemoved: "&aDiscord ranken har blivit borttagen från användaren"
 wrongTimeFormat: "&cFel format på tiden. Exmpel: 1h"
+alreadyLinked: "&cDetta minecraft konto är redan kopplat till ett discord konto."
 
 syntax:
   addrank: "&7/discord addrank <player> <rank>"

@@ -53,12 +53,22 @@ public class DiscordCommand extends Command {
 					public void run() {
 						Connection con = null;
 						PreparedStatement stat = null;
+						PreparedStatement stat2 = null;
 						String discordId = "";
 						try {
 							con = DataSource.getconConnection();
-							stat = con.prepareStatement(SQLQueries.SELECT_USER_FROM_TOKEN.toString());
+							stat = con.prepareStatement(SQLQueries.SELECT_USER_FROM_UUID.toString());
 							stat.setString(1, args[0]);
 							ResultSet rs = stat.executeQuery();
+
+							if (!rs.next()) {
+								pl.sendMessage("alreadyLinked", player);
+								return;
+							}
+							
+							stat2 = con.prepareStatement(SQLQueries.SELECT_USER_FROM_TOKEN.toString());
+							stat2.setString(1, args[0]);
+							rs = stat2.executeQuery();
 
 							if (!rs.next()) {
 								pl.sendMessage("notInDatabase", player);
@@ -75,7 +85,6 @@ public class DiscordCommand extends Command {
 						} catch (SQLException e) {
 							e.printStackTrace();
 						} finally {
-							System.err.println("Test");
 							DataSource.closeConnectionAndStatment(con, stat);
 						}
 						pl.sendVerifiedPlayerToDiscord(player.getName(), player.getUniqueId(), discordId);
