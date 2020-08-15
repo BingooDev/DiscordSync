@@ -2,9 +2,38 @@ name: DiscordSync
 version: 1.0.0
 main: nu.granskogen.spela.DiscordSync.Main
 author: Bingoo
-depends: ['LuckPerms']
+softdepend: ['LuckPerms']
 
 commands:
   discord:
     description: Sync discord and minecraft user
-    alias: ['dc']
+    aliases: ['dc']
+  permban:
+    description: Banns a player permanently from the server and Discord.
+    permission: DiscordSync.permban.use
+    permission-message: "§cÅtkomst nekad"
+  permban:
+    description: Unbanns a player from the server and Discord.
+    permission: DiscordSync.unpermban.use
+    permission-message: "§cÅtkomst nekad"
+
+permissions:
+  DiscordSync.changeRanks:
+    description: Change a players discord ranks through Minecraft.
+    default: op
+  DiscordSync.permban.use:
+    description: Use the permban command
+    default: op
+  DiscordSync.unpermban.use:
+    description: Use the unpermban command
+    default: op
+  DiscordSync.permban.notify:
+    description: Get a notify when someone gets permbanned
+  DiscordSync.*:
+    description: Wildcard permission
+    default: op
+    children:
+      DiscordSync.changeRanks: true
+      DiscordSync.permban.use: true
+      DiscordSync.unpermban.use: true
+      DiscordSync.permban.notify: true

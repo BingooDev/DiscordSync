@@ -57,7 +57,7 @@ public class DiscordCommand extends Command {
 						String discordId = "";
 						try {
 							con = DataSource.getconConnection();
-							stat = con.prepareStatement(SQLQueries.SELECT_USER_FROM_UUID.toString());
+							stat = con.prepareStatement(SQLQuery.SELECT_USER_FROM_UUID.toString());
 							stat.setString(1, args[0]);
 							ResultSet rs = stat.executeQuery();
 
@@ -66,7 +66,7 @@ public class DiscordCommand extends Command {
 								return;
 							}
 							
-							stat2 = con.prepareStatement(SQLQueries.SELECT_USER_FROM_TOKEN.toString());
+							stat2 = con.prepareStatement(SQLQuery.SELECT_USER_FROM_TOKEN.toString());
 							stat2.setString(1, args[0]);
 							rs = stat2.executeQuery();
 
@@ -75,7 +75,7 @@ public class DiscordCommand extends Command {
 								return;
 							}
 
-							PreparedStatement addToDatabase = con.prepareStatement(SQLQueries.UPDATE_USER.toString());
+							PreparedStatement addToDatabase = con.prepareStatement(SQLQuery.UPDATE_USER.toString());
 							addToDatabase.setString(1, player.getUniqueId().toString());
 							addToDatabase.setString(2, player.getName());
 							addToDatabase.setString(3, args[0]);

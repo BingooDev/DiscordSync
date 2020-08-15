@@ -10,7 +10,40 @@ rankAdded: "&aAnvändaren har fått Discord ranken."
 rankRemoved: "&aDiscord ranken har blivit borttagen från användaren"
 wrongTimeFormat: "&cFel format på tiden. Exmpel: 1h"
 alreadyLinked: "&cDetta minecraft konto är redan kopplat till ett discord konto."
+alreadyBanned: "&cSpelaren är redan bannlyst."
+notBanned: "&cSpelaren är redan bannlyst."
+addBan: "&aSpelaren är nu bannlyst från hela Granskogen och Discord."
+removeBan: "&aSpelaren är inte längre bannlyst från Granskogen och Discord."
 
 syntax:
-  addrank: "&7/discord addrank <player> <rank>"
-  removerank: "&7/discord removerank <player> <rank>"
+  addrank: "&7Syntax: /discord addrank <player> <rank>"
+  removerank: "&7Syntax: /discord removerank <player> <rank>"
+  permban: "&7Syntax: /permban <player> <reason>"
+
+banMessage:
+  layout:
+  - ''
+  - '&8&m+------------&8[&4&lBannlysning&8]&m------------+'
+  - ''
+  - '&2&l» &a&lDatum vid bannlysning: &f%DATE%'
+  - '&2&l» &a&lBannlyst av: &f%OPERATOR%'
+  - ''
+  - '&2&l» &a&lAnledning: &f%REASON%'
+  - '&2&l» &a&lUtgår: &fAldrig'
+  - ''
+  - ''
+  - '&2&l» &a&lDiscord: &fdiscord.granskogen.nu'
+  - '&2&l» &a&lMail: &fsupport@granskogen.nu'
+  - ''
+  - '&8&m+-------------------------------------------+'
+  notification:
+    layout:
+    - ''
+    - '&4&m----------------------------------------------'
+    - ''
+    - '  &e&l%NAME% &7har blivit &cBannlyst &c&l(Permanent)'
+    - '  &4&l» &7Anledning: &c%REASON%'
+    - '  &4&l» &7Lagd av: &c%OPERATOR%'
+    - '  &4&l» &7Utgår: &cAldrig'
+    - ''
+    - '&4&m----------------------------------------------'
