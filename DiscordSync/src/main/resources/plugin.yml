@@ -2,7 +2,7 @@ name: DiscordSync
 version: 1.0.0
 main: nu.granskogen.spela.DiscordSync.Main
 author: Bingoo
-softdepend: ['LuckPerms']
+softDepends: ['LuckPerms']
 
 commands:
   discord:
