@@ -11,7 +11,7 @@ rankRemoved: "&aDiscord ranken har blivit borttagen från användaren"
 wrongTimeFormat: "&cFel format på tiden. Exmpel: 1h"
 alreadyLinked: "&cDetta minecraft konto är redan kopplat till ett discord konto."
 alreadyBanned: "&cSpelaren är redan bannlyst."
-notBanned: "&cSpelaren är redan bannlyst."
+notBanned: "&cSpelaren är inte bannlyst."
 addBan: "&aSpelaren är nu bannlyst från hela Granskogen och Discord."
 removeBan: "&aSpelaren är inte längre bannlyst från Granskogen och Discord."
 
@@ -19,6 +19,7 @@ syntax:
   addrank: "&7Syntax: /discord addrank <player> <rank>"
   removerank: "&7Syntax: /discord removerank <player> <rank>"
   permban: "&7Syntax: /permban <player> <reason>"
+  unpermban: "&7Syntax: /unpermban <player>"
 
 banMessage:
   layout:

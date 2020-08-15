@@ -43,6 +43,7 @@ public class Main extends Plugin {
 		loadConfigManager();
 		getProxy().getPluginManager().registerCommand(this, new DiscordCommand("discord"));
 		getProxy().getPluginManager().registerCommand(this, new PermbanCommand("permban"));
+		getProxy().getPluginManager().registerCommand(this, new UnPermbanCommand("unpermban"));
 		getProxy().getPluginManager().registerListener(this, new EventListener());
 		createBannedPlayersTable(); // If table exists, it will not be created again.
 		loadBannedPlayers();
@@ -187,6 +188,49 @@ public class Main extends Plugin {
 			obj.addProperty("type", "AddBan");
 			obj.addProperty("uuid", uuid.toString());
 			obj.addProperty("reason", reason);
+			output.write(obj.toString().getBytes());
+
+			socket.close();
+		} catch (UnknownHostException ex) {
+
+			System.out.println("Server not found: " + ex.getMessage());
+
+		} catch (IOException ex) {
+			System.out.println("I/O error: " + ex.getMessage());
+		}
+		return true;
+	}
+	
+	public boolean removePermban(UUID uuid) {
+		Connection con = null;
+		PreparedStatement stat = null;
+		try {
+			con = DataSource.getconConnection();
+
+			stat = con.prepareStatement(SQLQuery.PERMBANS_REMOVE_USER.toString());
+			stat.setString(1, uuid.toString());
+			stat.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			DataSource.closeConnectionAndStatment(con, stat);
+			return false;
+		} finally {
+			DataSource.closeConnectionAndStatment(con, stat);
+		}
+		if (bannedPlayers.contains(uuid))
+			bannedPlayers.remove(uuid);
+		
+		System.err.println(bannedPlayers.toString());
+
+		int port = 3003;
+		try (Socket socket = new Socket("localhost", port)) {
+
+			OutputStream output = socket.getOutputStream();
+			JsonObject obj = new JsonObject();
+
+			obj.addProperty("type", "RemoveBan");
+			obj.addProperty("uuid", uuid.toString());
 			output.write(obj.toString().getBytes());
 
 			socket.close();

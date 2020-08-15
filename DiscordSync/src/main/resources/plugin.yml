@@ -29,6 +29,7 @@ permissions:
     default: op
   DiscordSync.permban.notify:
     description: Get a notify when someone gets permbanned
+    default: op
   DiscordSync.*:
     description: Wildcard permission
     default: op
