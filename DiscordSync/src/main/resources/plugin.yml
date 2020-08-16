@@ -16,6 +16,10 @@ commands:
     description: Unbanns a player from the server and Discord.
     permission: DiscordSync.unpermban.use
     permission-message: "§cÅtkomst nekad"
+  permban:
+    description: Check if a player is perm banned.
+    permission: DiscordSync.check.use
+    permission-message: "§cÅtkomst nekad"
 
 permissions:
   DiscordSync.changeRanks:
@@ -26,6 +30,9 @@ permissions:
     default: op
   DiscordSync.unpermban.use:
     description: Use the unpermban command
+    default: op
+  DiscordSync.check.use:
+    description: Use the checkpermban command
     default: op
   DiscordSync.permban.notify:
     description: Get a notify when someone gets permbanned
@@ -38,3 +45,4 @@ permissions:
       DiscordSync.permban.use: true
       DiscordSync.unpermban.use: true
       DiscordSync.permban.notify: true
+      DiscordSync.check.use: true

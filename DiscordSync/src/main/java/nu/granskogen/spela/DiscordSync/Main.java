@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,6 +45,7 @@ public class Main extends Plugin {
 		getProxy().getPluginManager().registerCommand(this, new DiscordCommand("discord"));
 		getProxy().getPluginManager().registerCommand(this, new PermbanCommand("permban"));
 		getProxy().getPluginManager().registerCommand(this, new UnPermbanCommand("unpermban"));
+		getProxy().getPluginManager().registerCommand(this, new CheckCommand("checkpermban"));
 		getProxy().getPluginManager().registerListener(this, new EventListener());
 		createBannedPlayersTable(); // If table exists, it will not be created again.
 		loadBannedPlayers();
@@ -200,7 +202,7 @@ public class Main extends Plugin {
 		}
 		return true;
 	}
-	
+
 	public boolean removePermban(UUID uuid) {
 		Connection con = null;
 		PreparedStatement stat = null;
@@ -220,8 +222,6 @@ public class Main extends Plugin {
 		}
 		if (bannedPlayers.contains(uuid))
 			bannedPlayers.remove(uuid);
-		
-		System.err.println(bannedPlayers.toString());
 
 		int port = 3003;
 		try (Socket socket = new Socket("localhost", port)) {
@@ -279,23 +279,58 @@ public class Main extends Plugin {
 	}
 
 	public String getBanMessage(String operator, String reason, String date) {
-		String message = "";
-		for (String row : cfgm.getLanguage().getStringList("banMessage.layout")) {
-			message += row + "\n";
-		}
+		String message = cfgm.getLanguage().getStringList("banMessage.layout").stream()
+				.collect(Collectors.joining("\n"));
 		message = ChatColor.translateAlternateColorCodes('&',
 				message.replace("%OPERATOR%", operator).replace("%REASON%", reason).replace("%DATE%", date));
 		return message;
 	}
 
 	public String getBanNotification(String operator, String reason) {
-		String message = "";
-		for (String row : cfgm.getLanguage().getStringList("banMessage.notification.layout")) {
-			message += row + "\n";
-		}
+		String message = cfgm.getLanguage().getStringList("banMessage.notification.layout").stream()
+				.collect(Collectors.joining("\n"));
 		message = ChatColor.translateAlternateColorCodes('&',
 				message.replace("%OPERATOR%", operator).replace("%REASON%", reason));
 		return message;
+	}
+
+	public String getCheckMessage(UUID uuid) {
+		Connection con = null;
+		PreparedStatement stat = null;
+		boolean banned = false;
+		String reason = "";
+		try {
+			con = DataSource.getconConnection();
+
+			stat = con.prepareStatement(SQLQuery.PERMBANS_SELECT_USER_FROM_UUID.toString());
+			stat.setString(1, uuid.toString());
+			ResultSet rs = stat.executeQuery();
+
+			if (!rs.next()) {
+				banned = false;
+			} else {
+				banned = true;
+				reason = rs.getString("reason");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			DataSource.closeConnectionAndStatment(con, stat);
+		} finally {
+			DataSource.closeConnectionAndStatment(con, stat);
+		}
+
+		String message = cfgm.getLanguage().getStringList("check.layout").stream().collect(Collectors.joining("\n"));
+		String banMsg = "";
+		banMsg = cfgm.getLanguage().getString("check.banned." + banned);
+		if (banned) {
+			message = message.replace("%UUID%", uuid.toString()).replace("%BANNED%",
+					banMsg + "\n  " + cfgm.getLanguage().getString("check.reason").replace("%REASON%", reason));
+		} else if (!banned) {
+			message = message.replace("%UUID%", uuid.toString()).replace("%BANNED%", banMsg);
+		}
+
+		return ChatColor.translateAlternateColorCodes('&', message);
 	}
 
 	public void sendBanNotification(String operator, String reason) {
@@ -405,7 +440,8 @@ public class Main extends Plugin {
 	}
 
 	public UUID getUuidFromUuidWithoutDashes(String uuid) {
-		// To get a UUID from a string, it requires dashes, so we have to format it with regex
+		// To get a UUID from a string, it requires dashes, so we have to format it with
+		// regex
 		String uuidWithDashes = uuid.replaceFirst(
 				"([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
 		return UUID.fromString(uuidWithDashes);

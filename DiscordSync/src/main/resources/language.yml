@@ -20,7 +20,16 @@ syntax:
   removerank: "&7Syntax: /discord removerank <player> <rank>"
   permban: "&7Syntax: /permban <player> <reason>"
   unpermban: "&7Syntax: /unpermban <player>"
+  check: "&7Syntax: /checkpermban <player>"
 
+check:
+  layout:
+  - '&cUUID &8» &7%UUID%'
+  - '&cBannlyst &8» %BANNED%'
+  reason: '&cAnledning &8» &7%REASON%'
+  banned:
+    true: '&cJa'
+    false: '&aNej'
 banMessage:
   layout:
   - ''
