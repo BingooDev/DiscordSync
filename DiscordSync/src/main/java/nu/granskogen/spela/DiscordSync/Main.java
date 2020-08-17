@@ -150,7 +150,7 @@ public class Main extends Plugin {
 		}
 	}
 
-	public boolean addPermban(UUID uuid, String reason, String operator) {
+	public boolean addPermban(UUID uuid, String reason, String operator, String nameOfBanPlayer) {
 		Connection con = null;
 		PreparedStatement stat = null;
 		PreparedStatement stat2 = null;
@@ -195,6 +195,10 @@ public class Main extends Plugin {
 			obj.addProperty("type", "AddBan");
 			obj.addProperty("uuid", uuid.toString());
 			obj.addProperty("reason", reason);
+			obj.addProperty("operator", operator);
+			obj.addProperty("name", nameOfBanPlayer);
+			obj.addProperty("date", date);
+			
 			output.write(obj.toString().getBytes());
 
 			socket.close();
@@ -211,12 +215,23 @@ public class Main extends Plugin {
 	public boolean removePermban(UUID uuid) {
 		Connection con = null;
 		PreparedStatement stat = null;
+		PreparedStatement stat2 = null;
+		String discordId = null;
 		try {
 			con = DataSource.getconConnection();
-
-			stat = con.prepareStatement(SQLQuery.PERMBANS_REMOVE_USER.toString());
+			
+			stat = con.prepareStatement(SQLQuery.PERMBANS_SELECT_USER_FROM_UUID.toString());
 			stat.setString(1, uuid.toString());
-			stat.executeUpdate();
+			ResultSet rs = stat.executeQuery();
+			
+			if(!rs.next())
+				return false;
+			
+			discordId = rs.getString("discordId");
+
+			stat2 = con.prepareStatement(SQLQuery.PERMBANS_REMOVE_USER.toString());
+			stat2.setString(1, uuid.toString());
+			stat2.executeUpdate();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -228,23 +243,26 @@ public class Main extends Plugin {
 		if (bannedPlayers.contains(uuid))
 			bannedPlayers.remove(uuid);
 
-		int port = 3003;
-		try (Socket socket = new Socket("localhost", port)) {
-
-			OutputStream output = socket.getOutputStream();
-			JsonObject obj = new JsonObject();
-
-			obj.addProperty("type", "RemoveBan");
-			obj.addProperty("uuid", uuid.toString());
-			output.write(obj.toString().getBytes());
-
-			socket.close();
-		} catch (UnknownHostException ex) {
-
-			System.out.println("Server not found: " + ex.getMessage());
-
-		} catch (IOException ex) {
-			System.out.println("I/O error: " + ex.getMessage());
+		if(discordId != null) {
+			int port = 3003;
+			try (Socket socket = new Socket("localhost", port)) {
+				
+				OutputStream output = socket.getOutputStream();
+				JsonObject obj = new JsonObject();
+				
+				obj.addProperty("type", "RemoveBan");
+				obj.addProperty("uuid", uuid.toString());
+				obj.addProperty("discordId", discordId);
+				output.write(obj.toString().getBytes());
+				
+				socket.close();
+			} catch (UnknownHostException ex) {
+				
+				System.out.println("Server not found: " + ex.getMessage());
+				
+			} catch (IOException ex) {
+				System.out.println("I/O error: " + ex.getMessage());
+			}			
 		}
 		return true;
 	}

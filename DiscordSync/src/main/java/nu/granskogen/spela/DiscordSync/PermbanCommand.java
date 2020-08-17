@@ -40,7 +40,7 @@ public class PermbanCommand extends Command implements TabExecutor {
 						pl.sendMessage("noPlayer", sender);
 						return;
 					}
-					if (pl.addPermban(uuid, reason, sender.getName()))
+					if (pl.addPermban(uuid, reason, sender.getName(), args[0]))
 						pl.sendMessage("addBan", sender);
 					else
 						pl.sendMessage("alreadyBanned", sender);
