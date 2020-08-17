@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -16,17 +16,17 @@ public class EventListener implements Listener {
 	Main pl = Main.getInstance();
 	
 	@EventHandler
-	public void onLogin(final LoginEvent event) {
+	public void onLogin(final PostLoginEvent event) {
 		
 		pl.getProxy().getScheduler().runAsync(pl, new Runnable() {
 			
 			@Override
 			public void run() {
 				// Kick Player if banned
-				UUID uuid = event.getConnection().getUniqueId();
+				UUID uuid = event.getPlayer().getUniqueId();
 				if(pl.isPlayerBanned(uuid)) {
-					event.setCancelReason(new TextComponent(pl.getBannedMessageForBannedPlayer(uuid)));
-					event.setCancelled(true);
+					System.err.println("Test");
+					event.getPlayer().disconnect(new TextComponent(pl.getBannedMessageForBannedPlayer(uuid)));
 					return;
 				}
 
@@ -42,7 +42,7 @@ public class EventListener implements Listener {
 					if (!rs.next()) 
 						return;
 					
-					String name = event.getConnection().getName();
+					String name = event.getPlayer().getName();
 					if(rs.getString("minecraftname") == null || !rs.getString("minecraftname").equals(name)) {
 						PreparedStatement updateName = con.prepareStatement(SQLQuery.UPDATE_USERNAME.toString());
 						updateName.setString(1, name);
