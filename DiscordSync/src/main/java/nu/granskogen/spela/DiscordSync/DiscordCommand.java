@@ -30,7 +30,7 @@ public class DiscordCommand extends Command {
 		if (args.length == 0) {
 			TextComponent text = new TextComponent(
 					ChatColor.translateAlternateColorCodes('&', pl.cfgm.getLanguage().getString("discordLink")));
-			text.setClickEvent(new ClickEvent(Action.OPEN_URL, "https://discord.granskogen.nu"));
+			text.setClickEvent(new ClickEvent(Action.OPEN_URL, pl.cfgm.getLanguage().getString("discordUrl")));
 			text.setHoverEvent(new HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT,
 					new ComponentBuilder(ChatColor.translateAlternateColorCodes('&',
 							pl.cfgm.getLanguage().getString("discordLinkHover"))).create()));
@@ -58,10 +58,10 @@ public class DiscordCommand extends Command {
 						try {
 							con = DataSource.getconConnection();
 							stat = con.prepareStatement(SQLQuery.SELECT_USER_FROM_UUID.toString());
-							stat.setString(1, args[0]);
+							stat.setString(1, player.getUniqueId().toString());
 							ResultSet rs = stat.executeQuery();
 
-							if (!rs.next()) {
+							if (rs.next()) {
 								pl.sendMessage("alreadyLinked", player);
 								return;
 							}
@@ -91,7 +91,8 @@ public class DiscordCommand extends Command {
 						if(pl.hasLuckperms) {
 							LuckPermsCheck.addRanks(player);
 						}
-
+						
+						pl.addOnlineVerifiedPlayer(player.getUniqueId());
 						pl.sendMessage("added", player);
 					}
 				});
