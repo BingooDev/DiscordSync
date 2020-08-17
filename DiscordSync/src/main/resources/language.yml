@@ -1,6 +1,7 @@
 noPermission: "&cÅtkomst nekad!"
 discordLink: "&aGranskogens discord är: https://discord.granskogen.nu"
-discordLinkHover: "&aKlicka på texten för att komma till Granskogens Discord."
+discordLinkHover: "&aKlicka här!"
+discordUrl: "https://discord.granskogen.nu"
 onlyPlayers: "&cYou need to be a player to use this command."
 notInDatabase: "&cDen angivna koden finns inte."
 added: "&aDitt Minecraft och Discord konto är nu kopplade."

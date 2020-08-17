@@ -38,6 +38,8 @@ public class Main extends Plugin {
 	public boolean hasLuckperms = false;
 	public LuckPerms api;
 	private ArrayList<UUID> bannedPlayers = new ArrayList<UUID>();
+	private ArrayList<UUID> onlineVeriedPlayers = new ArrayList<UUID>();
+	private Broadcast broadcastDiscord;
 
 	public void onEnable() {
 		instance = this;
@@ -57,6 +59,9 @@ public class Main extends Plugin {
 			api = LuckPermsProvider.get();
 			new LuckPermsEventListener(api);
 		}
+		
+		this.broadcastDiscord = new Broadcast("discordLink", "discordLinkHover", "discordUrl", 108000); //108000s = 0.5h
+		this.broadcastDiscord.startLoop();
 	}
 
 	public void sendMessage(String messagePath, CommandSender sender) {
@@ -353,6 +358,20 @@ public class Main extends Plugin {
 	public Collection<UUID> getBannedPlayers() {
 		return Collections.unmodifiableCollection(bannedPlayers);
 	}
+	
+	public Collection<UUID> getVerifiedPlayer() {
+		return Collections.unmodifiableCollection(onlineVeriedPlayers);
+	}
+	
+	public void addOnlineVerifiedPlayer(UUID uuid) {
+		if(!onlineVeriedPlayers.contains(uuid))
+			onlineVeriedPlayers.add(uuid);
+	}
+	
+	public void removeOnlineVerifiedPlayer(UUID uuid) {
+		if(onlineVeriedPlayers.contains(uuid))
+			onlineVeriedPlayers.remove(uuid);
+	}
 
 	private void createBannedPlayersTable() {
 		Connection con = null;
@@ -445,5 +464,9 @@ public class Main extends Plugin {
 		String uuidWithDashes = uuid.replaceFirst(
 				"([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
 		return UUID.fromString(uuidWithDashes);
+	}
+	
+	public String getFormatedMessageFromLanguagePath(String path) {
+		return ChatColor.translateAlternateColorCodes('&', cfgm.getLanguage().getString(path));
 	}
 }

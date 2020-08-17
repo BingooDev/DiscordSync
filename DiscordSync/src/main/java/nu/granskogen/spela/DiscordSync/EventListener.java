@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -26,6 +27,7 @@ public class EventListener implements Listener {
 				if(pl.isPlayerBanned(uuid)) {
 					event.setCancelReason(new TextComponent(pl.getBannedMessageForBannedPlayer(uuid)));
 					event.setCancelled(true);
+					return;
 				}
 
 				// Update Nickname on Discord
@@ -55,8 +57,14 @@ public class EventListener implements Listener {
 				} finally {
 					DataSource.closeConnectionAndStatment(con, stat);
 				}
+				pl.addOnlineVerifiedPlayer(uuid);
 			}
 		});
+	}
+	
+	@EventHandler
+	public void onDisconnect(PlayerDisconnectEvent event) {
+		pl.removeOnlineVerifiedPlayer(event.getPlayer().getUniqueId());
 	}
 
 }
