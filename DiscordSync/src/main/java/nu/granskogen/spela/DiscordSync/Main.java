@@ -182,7 +182,7 @@ public class Main extends Plugin {
 		ProxiedPlayer player = getProxy().getPlayer(uuid);
 		if (player != null)
 			player.disconnect(new TextComponent(getBanMessage(operator, reason, date)));
-		sendBanNotification(operator, reason);
+		sendBanNotification(operator, nameOfBanPlayer, reason);
 		if (!bannedPlayers.contains(uuid))
 			bannedPlayers.add(uuid);
 
@@ -309,11 +309,11 @@ public class Main extends Plugin {
 		return message;
 	}
 
-	public String getBanNotification(String operator, String reason) {
+	public String getBanNotification(String operator, String bannedPlayerName, String reason) {
 		String message = cfgm.getLanguage().getStringList("banMessage.notification.layout").stream()
 				.collect(Collectors.joining("\n"));
 		message = ChatColor.translateAlternateColorCodes('&',
-				message.replace("%OPERATOR%", operator).replace("%REASON%", reason));
+				message.replace("%OPERATOR%", operator).replace("%REASON%", reason).replace("%NAME%", bannedPlayerName));
 		return message;
 	}
 
@@ -356,8 +356,8 @@ public class Main extends Plugin {
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
 
-	public void sendBanNotification(String operator, String reason) {
-		String notification = getBanNotification(operator, reason);
+	public void sendBanNotification(String operator, String bannedPlayerName, String reason) {
+		String notification = getBanNotification(operator, bannedPlayerName, reason);
 		for (ProxiedPlayer player : getProxy().getPlayers()) {
 			if (player.hasPermission("DiscordSync.permban.notify"))
 				player.sendMessage(new TextComponent(notification));

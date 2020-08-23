@@ -20,7 +20,6 @@ public class LuckPermsEventListener {
         	for (Node node : e.getUser().getNodes()) {
 				if(node.getKey().equals("group.omega")) {
 					if(!node.hasExpired()) {
-						System.err.println(e.getUniqueId());
 						if(node.getExpiry() == null) {
 							pl.sendAddDiscordRank(e.getUniqueId(), "omega", null);
 						} else {

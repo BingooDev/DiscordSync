@@ -25,7 +25,6 @@ public class EventListener implements Listener {
 				// Kick Player if banned
 				UUID uuid = event.getPlayer().getUniqueId();
 				if(pl.isPlayerBanned(uuid)) {
-					System.err.println("Test");
 					event.getPlayer().disconnect(new TextComponent(pl.getBannedMessageForBannedPlayer(uuid)));
 					return;
 				}
