@@ -18,7 +18,7 @@ public class LuckPermsEventListener {
         // subscribe to an event using a lambda
         nodeListener = eventBus.subscribe(PlayerLoginProcessEvent.class, e -> {
         	for (Node node : e.getUser().getNodes()) {
-				if(node.getKey().equals("group.omega")) {
+				if(node.getKey().equals("group.omega") || node.getKey().equals("group.omegalite")) {
 					if(!node.hasExpired()) {
 						if(node.getExpiry() == null) {
 							pl.sendAddDiscordRank(e.getUniqueId(), "omega", null);
