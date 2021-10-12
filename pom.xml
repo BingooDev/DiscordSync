@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>nu.granskogen.spela</groupId>
 	<artifactId>DiscordSync</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.0.1-RELEASE</version>
 	<name>DiscordSync</name>
 	<description>A plugin that lets you verify discord members to minecraft and sync ranks.</description>
 

@@ -1,5 +1,5 @@
 name: DiscordSync
-version: 1.0.0
+version: 1.0.1
 main: nu.granskogen.spela.DiscordSync.Main
 author: Bingoo
 softDepends: ['LuckPerms']
@@ -12,11 +12,11 @@ commands:
     description: Banns a player permanently from the server and Discord.
     permission: DiscordSync.permban.use
     permission-message: "§cÅtkomst nekad"
-  permban:
+  unpermban:
     description: Unbanns a player from the server and Discord.
     permission: DiscordSync.unpermban.use
     permission-message: "§cÅtkomst nekad"
-  permban:
+  check:
     description: Check if a player is perm banned.
     permission: DiscordSync.check.use
     permission-message: "§cÅtkomst nekad"
