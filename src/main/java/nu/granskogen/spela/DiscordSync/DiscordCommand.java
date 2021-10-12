@@ -138,7 +138,7 @@ public class DiscordCommand extends Command {
 					pl.sendMessage("notARank", sender);
 					return;
 				}
-				if (!args[3].matches("^[0-9hms]*$")) {
+				if (!args[3].matches("^[0-9dhms]*$")) {
 					pl.sendMessage("wrongTimeFormat", sender);
 					return;
 				}

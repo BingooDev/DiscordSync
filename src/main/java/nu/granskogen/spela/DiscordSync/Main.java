@@ -271,14 +271,20 @@ public class Main extends Plugin {
 		String stringTimeWithSpace = "";
 		long timeInSec = 0;
 		for (String ch : time.split("")) {
-			if (ch.equals("h") || ch.equals("m") || ch.equals("s")) {
+			if (ch.equals("d") || ch.equals("h") || ch.equals("m") || ch.equals("s")) {
 				stringTimeWithSpace += ch + " ";
 			} else {
 				stringTimeWithSpace += ch;
 			}
 		}
 		for (String timeWithUnit : stringTimeWithSpace.split(" ")) {
-			if (timeWithUnit.contains("h")) {
+			if (timeWithUnit.contains("d")) {
+				String days = timeWithUnit.replace("d", "");
+				if (days.isEmpty()) {
+					days = "0";
+				}
+				timeInSec += Double.parseDouble(days) * 24 * 60 * 60;
+			} else if (timeWithUnit.contains("h")) {
 				String hours = timeWithUnit.replace("h", "");
 				if (hours.isEmpty()) {
 					hours = "0";
