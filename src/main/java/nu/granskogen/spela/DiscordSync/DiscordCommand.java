@@ -108,7 +108,7 @@ public class DiscordCommand extends Command {
 					pl.sendMessage("noPlayer", sender);
 					return;
 				}
-				List<String> ranks = Arrays.asList("omega", "decent");
+				List<String> ranks = Arrays.asList("omega", "omegaplus", "decent");
 				if (!ranks.contains(args[2])) {
 					pl.sendMessage("notARank", sender);
 					return;
@@ -133,7 +133,7 @@ public class DiscordCommand extends Command {
 					pl.sendMessage("noPlayer", sender);
 					return;
 				}
-				List<String> ranks = Arrays.asList("omega", "decent");
+				List<String> ranks = Arrays.asList("omega", "omegaplus", "decent");
 				if (!ranks.contains(args[2])) {
 					pl.sendMessage("notARank", sender);
 					return;

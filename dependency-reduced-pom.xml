@@ -4,7 +4,7 @@
   <groupId>nu.granskogen.spela</groupId>
   <artifactId>DiscordSync</artifactId>
   <name>DiscordSync</name>
-  <version>1.0.1-RELEASE</version>
+  <version>1.1.0-RELEASE</version>
   <description>A plugin that lets you verify discord members to minecraft and sync ranks.</description>
   <build>
     <defaultGoal>clean package install</defaultGoal>
@@ -74,7 +74,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
   </properties>
 </project>
