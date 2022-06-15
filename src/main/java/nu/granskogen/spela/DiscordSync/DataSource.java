@@ -13,7 +13,7 @@ public class DataSource {
 	
 	static {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			String host = pl.cfgm.getConfig().getString("database.host");
 			String database = pl.cfgm.getConfig().getString("database.database");
 			String username = pl.cfgm.getConfig().getString("database.username");
